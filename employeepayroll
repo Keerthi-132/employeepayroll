@@ -1,0 +1,71 @@
+#include <stdio.h>
+
+
+struct Employee {
+    char name[100];
+    float hoursWorked;
+    float hourlyRate;
+    float taxRate;
+    float healthInsurance;
+    float retirementContribution;
+};
+
+
+float calculateGrossPay(struct Employee emp) {
+    return emp.hoursWorked * emp.hourlyRate;
+}
+
+
+float calculateTax(float grossPay, float taxRate) {
+    return grossPay * taxRate;
+}
+
+
+float calculateNetPay(float grossPay, float tax, float healthInsurance, float retirementContribution) {
+    return grossPay - tax - healthInsurance - retirementContribution;
+}
+
+
+void generatePayStub(struct Employee emp) {
+    float grossPay = calculateGrossPay(emp);
+    float tax = calculateTax(grossPay, emp.taxRate);
+    float netPay = calculateNetPay(grossPay, tax, emp.healthInsurance, emp.retirementContribution);
+    
+    printf("\n--- Pay Stub for %s ---\n", emp.name);
+    printf("Hours Worked: %.2f\n", emp.hoursWorked);
+    printf("Hourly Rate: $%.2f\n", emp.hourlyRate);
+    printf("Gross Pay: $%.2f\n", grossPay);
+    printf("Tax Deduction: -$%.2f\n", tax);
+    printf("Health Insurance Deduction: -$%.2f\n", emp.healthInsurance);
+    printf("Retirement Contribution: -$%.2f\n", emp.retirementContribution);
+    printf("Net Pay: $%.2f\n", netPay);
+    printf("----------------------------\n");
+}
+
+int main() {
+    struct Employee emp;
+
+    
+    printf("Enter employee name: ");
+    fgets(emp.name, sizeof(emp.name), stdin);
+    
+    printf("Enter hours worked: ");
+    scanf("%f", &emp.hoursWorked);
+    
+    printf("Enter hourly rate: ");
+    scanf("%f", &emp.hourlyRate);
+    
+    printf("Enter tax rate (as a decimal, e.g., 0.15 for 15%%): ");
+    scanf("%f", &emp.taxRate);
+    
+    printf("Enter health insurance deduction: ");
+    scanf("%f", &emp.healthInsurance);
+    
+    printf("Enter retirement contribution: ");
+     scanf("%f", &emp.retirementContribution);
+
+    
+    generatePayStub(emp);
+    
+    return 0;
+}
